@@ -40,6 +40,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 top: 0, left: 0, right: 0,
                 child: _header,
               ),
+              Positioned(
+                top: 16,
+                left: 32,
+                child: _headerTitle,
+              ),
               _belowHeaderContent
             ],
           ),
@@ -96,6 +101,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         child: Image.asset("assets/images/logo.png"),
       ),
     ),
+  );
+  
+  Widget get _headerTitle => Row(
+    mainAxisSize: MainAxisSize.min,
+    children: <Widget>[
+      Text("SunnyDay", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),),
+      Text(".Dev", style: TextStyle(fontSize: 18, color: Colors.white))
+    ],
   );
   
   Widget get _belowHeaderContent => StreamBuilder(
