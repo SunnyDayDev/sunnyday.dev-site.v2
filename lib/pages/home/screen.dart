@@ -32,14 +32,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _headerSizeTracker.onBuild(context);
     
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Positioned(
-            top: 0, left: 0, right: 0,
-            child: _header,
+      body: Scrollbar(
+        child: SingleChildScrollView(
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                top: 0, left: 0, right: 0,
+                child: _header,
+              ),
+              _belowHeaderContent
+            ],
           ),
-          _belowHeaderContent
-        ],
+        ),
       ),
     );
   }
@@ -101,14 +105,21 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       Size size = snapshot.data;
       return size.isEmpty
         ? Container()
-        : Positioned(top: size.height - 64, left: 0, right: 0, child: _mainContent());
+        : Padding(
+            padding: EdgeInsets.only(top: size.height - 64),
+            child: Center(child: _mainContent(),));
     },
   );
   
   Widget _mainContent() {
-    return Padding(
-      padding: EdgeInsets.only(left: 32, right: 32, bottom: 32),
-      child: _infoCardsContent(),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(left: 32, right: 32, bottom: 64),
+          child: _infoCardsContent(),
+        )
+      ],
     );
   }
   
