@@ -120,35 +120,39 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ? Container()
         : Padding(
             padding: EdgeInsets.only(top: size.height - 64),
-            child: Center(child: _mainContent(),));
+            child: Center(child: _mainContent,));
     },
   );
   
-  Widget _mainContent() {
+  Widget get _mainContent {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(left: 32, right: 32, bottom: 64),
-          child: _infoCardsContent(),
-        )
+          child: _infoCardsContent,
+        ),
+        Text("Контакты", style: TextStyle(fontSize: 20, color: Colors.brown)),
+        Padding(
+          padding: EdgeInsets.all(32),
+          child: _contacts,
+        ),
+        _footer
       ],
     );
   }
   
-  Widget _infoCardsContent() {
-    return Wrap(
-      alignment: WrapAlignment.center,
-      crossAxisAlignment: WrapCrossAlignment.start,
-      children: <Widget>[
-        infoCard(title: "Android", icon: Icons.android, message: "Опыт разработки более 6-х лет. Работал со всем спектром Android SDK, в результате чего имею отличное понимание о «жизни» Андроида и его компонентов. Уважаю Java, люблю Kotlin."),
-        infoCard(title: "В общем", icon: Icons.person, message: "Никогда не останавливаюсь на достигнутом и все время совершенствуюсь. Стараюсь быть в курсе текущего состояния дел, слежу за всем что творится в мире мобильной разработки и разработки в целом, посещаю конференции (Mobius, DroidCon, MBLTDev), мечтаю начать контрибьютить в open-source. Всегда открыт чему-то новому."),
-        infoCard(title: "iOS", icon: Icons.android, message: "Опыт разработки более 2-х лет. В основном Swift (новые приложения), но также занимался и поддержкой старых приложений написанных на Objective-C.")
-      ],
-    );
-  }
+  Widget get _infoCardsContent => Wrap(
+    alignment: WrapAlignment.center,
+    crossAxisAlignment: WrapCrossAlignment.start,
+    children: <Widget>[
+      _infoCard(title: "Android", icon: Icons.android, message: "Опыт разработки более 6-х лет. Работал со всем спектром Android SDK, в результате чего имею отличное понимание о «жизни» Андроида и его компонентов. Уважаю Java, люблю Kotlin."),
+      _infoCard(title: "iOS", icon: Icons.android, message: "Опыт разработки более 2-х лет. В основном Swift (новые приложения), но также занимался и поддержкой старых приложений написанных на Objective-C."),
+      _infoCard(title: "В общем", icon: Icons.person, message: "Никогда не останавливаюсь на достигнутом и все время совершенствуюсь. Стараюсь быть в курсе текущего состояния дел, слежу за всем что творится в мире мобильной разработки и разработки в целом, посещаю конференции (Mobius, DroidCon, MBLTDev), мечтаю начать контрибьютить в open-source. Всегда открыт чему-то новому.")
+    ],
+  );
   
-  Widget infoCard({
+  Widget _infoCard({
     @required String title,
     @required IconData icon,
     @required String message
@@ -178,6 +182,49 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ],
         ),
       ),
+    ),
+  );
+  
+  Widget get _contacts => Wrap(
+    alignment: WrapAlignment.center,
+    crossAxisAlignment: WrapCrossAlignment.start,
+    spacing: 32,
+    children: <Widget>[
+      _contact(icon: Icons.email, text: "mail@sunnyday.dev", onTap: () { }),
+      _contact(icon: Icons.phone, text: "+7 (964) 382-8998", onTap: () { }),
+      _contact(icon: Icons.send, text: "@sunnydaydev", onTap: () { })
+    ],
+  );
+  
+  Widget _contact({
+    @required IconData icon,
+    @required String text,
+    @required Function() onTap
+  }) => InkWell(
+    borderRadius: BorderRadius.circular(8),
+    onTap: onTap,
+    child: Padding(
+      padding: EdgeInsets.all(16),
+      child:  Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Icon(icon, size: 48),
+          Text(text)
+        ],
+      ),
+    ),
+  );
+  
+  Widget get _footer => Container(
+    color: Colors.black,
+    padding: EdgeInsets.all(16),
+    child: Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Text("© ${DateTime.now().year} SunnyDay.Dev", style: TextStyle(color: Colors.white),)
+      ],
     ),
   );
   
