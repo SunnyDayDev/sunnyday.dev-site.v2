@@ -101,70 +101,41 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       Size size = snapshot.data;
       return size.isEmpty
         ? Container()
-        : Positioned(top: size.height - 64, left: 0, right: 0, bottom: 0, child: _mainContent());
+        : Positioned(top: size.height - 64, left: 0, right: 0, child: _mainContent());
     },
   );
   
   Widget _mainContent() {
     return Padding(
       padding: EdgeInsets.only(left: 32, right: 32, bottom: 32),
-      child: _dynamicInfoCardsContent(),
+      child: _infoCardsContent(),
     );
-    return Column(
-      mainAxisSize: MainAxisSize.min,
+  }
+  
+  Widget _infoCardsContent() {
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.start,
       children: <Widget>[
-        _dynamicInfoCardsContent()
+        infoCard(title: "Android", icon: Icons.android, message: "Опыт разработки более 6-х лет. Работал со всем спектром Android SDK, в результате чего имею отличное понимание о «жизни» Андроида и его компонентов. Уважаю Java, люблю Kotlin."),
+        infoCard(title: "В общем", icon: Icons.person, message: "Никогда не останавливаюсь на достигнутом и все время совершенствуюсь. Стараюсь быть в курсе текущего состояния дел, слежу за всем что творится в мире мобильной разработки и разработки в целом, посещаю конференции (Mobius, DroidCon, MBLTDev), мечтаю начать контрибьютить в open-source. Всегда открыт чему-то новому."),
+        infoCard(title: "iOS", icon: Icons.android, message: "Опыт разработки более 2-х лет. В основном Swift (новые приложения), но также занимался и поддержкой старых приложений написанных на Objective-C.")
       ],
     );
   }
-  
-  Widget _dynamicInfoCardsContent() {
-    final cards = _infoCards;
-    final spanCount = max(1, MediaQuery.of(context).size.width ~/ 480);
-    final rowCount = (cards.length / spanCount) + (cards.length % spanCount == 0 ? 0 : 1);
-  
-    List<Row> rows = List();
-    for (int r = 0; r < rowCount; r++) {
-      List<Widget> rowContent = List();
-      final start = r * spanCount;
-      final end = min(start + spanCount, cards.length);
-      for (int i = start; i < end; i++) {
-        rowContent.add(Expanded(child: cards[i],));
-      }
-    
-      rows.add(Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: rowContent,
-      ));
-    }
-  
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: rows,
-      ),
-    );
-  }
-  
-  List<Widget> get _infoCards => <Widget>[
-    infoCard(title: "Android", icon: Icons.android, message: "Опыт разработки более 6-х лет. Работал со всем спектром Android SDK, в результате чего имею отличное понимание о «жизни» Андроида и его компонентов. Уважаю Java, люблю Kotlin."),
-    infoCard(title: "В общем", icon: Icons.person, message: "Никогда не останавливаюсь на достигнутом и все время совершенствуюсь. Стараюсь быть в курсе текущего состояния дел, слежу за всем что творится в мире мобильной разработки и разработки в целом, посещаю конференции (Mobius, DroidCon, MBLTDev), мечтаю начать контрибьютить в open-source. Всегда открыт чему-то новому."),
-    infoCard(title: "iOS", icon: Icons.android, message: "Опыт разработки более 2-х лет. В основном Swift (новые приложения), но также занимался и поддержкой старых приложений написанных на Objective-C.")
-  ];
   
   Widget infoCard({
     @required String title,
     @required IconData icon,
     @required String message
-  }) => ConstrainedBox(
-    constraints: BoxConstraints(maxWidth: 380),
+  }) => Container(
+    width: 380,
     child: Card(
       elevation: 8,
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
