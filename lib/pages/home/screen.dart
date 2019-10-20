@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sunnydaydev_site/core/ui/widget_size_tracker.dart';
+import 'package:sunnydaydev_site/pages/home/bloc.dart';
 
 class HomePage extends StatefulWidget {
   
@@ -20,11 +21,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   
   WidgetSizeTracker _headerSizeTracker = WidgetSizeTracker(GlobalKey());
   
+  HomeBloc _bloc = HomeBloc();
+  
   @override
   void initState() {
     _logoAnimationController =  AnimationController(duration: Duration(seconds: 3), vsync: this);
     _logoAnimationController.repeat();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _logoAnimationController.dispose();
+    _bloc.close();
+    super.dispose();
   }
   
   @override
@@ -142,14 +152,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
   
-  Widget get _infoCardsContent => Wrap(
-    alignment: WrapAlignment.center,
-    crossAxisAlignment: WrapCrossAlignment.start,
-    children: <Widget>[
-      _infoCard(title: "Android", icon: Icons.android, message: "Опыт разработки более 6-х лет. Работал со всем спектром Android SDK, в результате чего имею отличное понимание о «жизни» Андроида и его компонентов. Уважаю Java, люблю Kotlin."),
-      _infoCard(title: "iOS", icon: Icons.android, message: "Опыт разработки более 2-х лет. В основном Swift (новые приложения), но также занимался и поддержкой старых приложений написанных на Objective-C."),
-      _infoCard(title: "В общем", icon: Icons.person, message: "Никогда не останавливаюсь на достигнутом и все время совершенствуюсь. Стараюсь быть в курсе текущего состояния дел, слежу за всем что творится в мире мобильной разработки и разработки в целом, посещаю конференции (Mobius, DroidCon, MBLTDev), мечтаю начать контрибьютить в open-source. Всегда открыт чему-то новому.")
-    ],
+  Widget get _infoCardsContent => StreamBuilder(
+    stream: _bloc.infos,
+    builder: (context, snapshot) {
+      List<InfoItem> items = snapshot.data ?? List();
+      return Wrap(
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.start,
+        children: items.map((item) =>
+          _infoCard(title: item.title, icon: item.icon, message: item.message))
+          .toList(),
+      );
+    }
   );
   
   Widget _infoCard({
@@ -185,15 +199,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     ),
   );
   
-  Widget get _contacts => Wrap(
-    alignment: WrapAlignment.center,
-    crossAxisAlignment: WrapCrossAlignment.start,
-    spacing: 32,
-    children: <Widget>[
-      _contact(icon: Icons.email, text: "mail@sunnyday.dev", onTap: () { }),
-      _contact(icon: Icons.phone, text: "+7 (964) 382-8998", onTap: () { }),
-      _contact(icon: Icons.send, text: "@sunnydaydev", onTap: () { })
-    ],
+  Widget get _contacts => StreamBuilder(
+    stream: _bloc.contacts,
+    builder: (context, snapshot) {
+      final List<ContactItem> items = snapshot.data ?? List();
+      return Wrap(
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.start,
+        spacing: 32,
+        children: items.map((item) => _contact(
+          icon: item.icon,
+          text: item.value,
+          onTap: () {
+            _bloc.add(ContactSelected(item));
+          }))
+          .toList()
+      );
+    },
   );
   
   Widget _contact({
@@ -227,11 +249,5 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ],
     ),
   );
-  
-  @override
-  void dispose() {
-    _logoAnimationController.dispose();
-    super.dispose();
-  }
   
 }
