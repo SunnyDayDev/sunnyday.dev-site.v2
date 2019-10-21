@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
+import 'package:sunnydaydev_site/core/ui/custom_icons_icons.dart';
 
 @immutable
 abstract class HomeState {
@@ -13,9 +13,9 @@ abstract class HomeState {
 class InitialHomeState extends HomeState {
   @override
   List<InfoItem> get infos => [
-    InfoItem(title: "Android", icon: Icons.android, message: "Опыт разработки более 6-х лет. Работал со всем спектром Android SDK, в результате чего имею отличное понимание о «жизни» Андроида и его компонентов. Уважаю Java, люблю Kotlin."),
-    InfoItem(title: "iOS", icon: Icons.android, message: "Опыт разработки более 2-х лет. В основном Swift (новые приложения), но также занимался и поддержкой старых приложений написанных на Objective-C."),
-    InfoItem(title: "В общем", icon: Icons.person, message: "Никогда не останавливаюсь на достигнутом и все время совершенствуюсь. Стараюсь быть в курсе текущего состояния дел, слежу за всем что творится в мире мобильной разработки и разработки в целом, посещаю конференции (Mobius, DroidCon, MBLTDev), мечтаю начать контрибьютить в open-source. Всегда открыт чему-то новому.")
+    InfoItem(title: "Android", icon: CustomIcons.android, message: "Опыт разработки более 6-х лет. Работал со всем спектром Android SDK, в результате чего имею отличное понимание о «жизни» Андроида и его компонентов. Уважаю Java, люблю Kotlin."),
+    InfoItem(title: "iOS", icon: CustomIcons.apple, message: "Опыт разработки более 2-х лет. В основном Swift (новые приложения), но также занимался и поддержкой старых приложений написанных на Objective-C."),
+    InfoItem(title: "В общем", icon: CustomIcons.person, message: "Никогда не останавливаюсь на достигнутом и все время совершенствуюсь. Стараюсь быть в курсе текущего состояния дел, слежу за всем что творится в мире мобильной разработки и разработки в целом, посещаю конференции (Mobius, DroidCon, MBLTDev), мечтаю начать контрибьютить в open-source. Всегда открыт чему-то новому.")
   ];
   
   @override
@@ -41,21 +41,21 @@ abstract class ContactItem {
   final IconData icon;
   final String value;
 
-  ContactItem(this.icon, this.value);
+  const ContactItem(this.icon, this.value);
 }
 
 class EmailContact extends ContactItem {
-  EmailContact(String value) : super(Icons.email, value);
+  const EmailContact(String value) : super(CustomIcons.email, value);
 }
 
 class PhoneContact extends ContactItem {
-  PhoneContact(String value) : super(Icons.phone, value);
+  const PhoneContact(String value) : super(CustomIcons.local_phone, value);
 }
 
 class TelegramContact extends ContactItem {
-  TelegramContact(String value) : super(Icons.send, value);
+  const TelegramContact(String value) : super(CustomIcons.send, value);
 }
 
 class SkypeContact extends ContactItem {
-  SkypeContact(String value) : super(Icons.person, value);
+  const SkypeContact(String value) : super(CustomIcons.skype, value);
 }

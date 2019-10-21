@@ -21,10 +21,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   
   WidgetSizeTracker _headerSizeTracker = WidgetSizeTracker(GlobalKey());
   
-  HomeBloc _bloc = HomeBloc();
+  HomeBloc _bloc;
   
   @override
   void initState() {
+    _bloc = HomeBloc(context);
     _logoAnimationController =  AnimationController(duration: Duration(seconds: 3), vsync: this);
     _logoAnimationController.repeat();
     super.initState();
