@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:universal_html/prefer_sdk/html.dart' as html;
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sunnydaydev_site/core/url_launcher/url_launcher.dart';
 import './bloc.dart';
 
 
@@ -43,7 +43,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } else {
       return;
     }
-    
-    html.window.location.href = url;
+
+    if (await canLaunch(url)) {
+      launch(url);
+    }
+
   }
 }

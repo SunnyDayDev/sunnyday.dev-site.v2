@@ -13,9 +13,9 @@ abstract class HomeState {
 class InitialHomeState extends HomeState {
   @override
   List<InfoItem> get infos => [
-    InfoItem(title: "Android", icon: CustomIcons.android, message: "Опыт разработки более 6-х лет. Работал со всем спектром Android SDK, в результате чего имею отличное понимание о «жизни» Андроида и его компонентов. Уважаю Java, люблю Kotlin."),
+    InfoItem(title: "Android", icon: CustomIcons.android, message: "Опыт разработки более 6-ти лет. Работал со всем спектром Android SDK, в результате чего имею отличное понимание о «жизни» Андроида и его компонентов. Уважаю Java, люблю Kotlin."),
     InfoItem(title: "iOS", icon: CustomIcons.apple, message: "Опыт разработки более 2-х лет. В основном Swift (новые приложения), но также занимался и поддержкой старых приложений написанных на Objective-C."),
-    InfoItem(title: "В общем", icon: CustomIcons.person, message: "Никогда не останавливаюсь на достигнутом и все время совершенствуюсь. Стараюсь быть в курсе текущего состояния дел, слежу за всем что творится в мире мобильной разработки и разработки в целом, посещаю конференции (Mobius, DroidCon, MBLTDev), мечтаю начать контрибьютить в open-source. Всегда открыт чему-то новому.")
+    InfoItem(title: "В общем", icon: CustomIcons.person, message: "Никогда не останавливаюсь на достигнутом и все время совершенствуюсь. Стараюсь быть в курсе текущего состояния дел, слежу за всем что творится в мире мобильной разработки и разработки в целом, посещаю конференции (Mobius, DroidCon, MBLTDev), мечтаю начать контрибьютить в open-source (сейчас кажется, что не хватает времени). Всегда открыт чему-то новому.")
   ];
   
   @override

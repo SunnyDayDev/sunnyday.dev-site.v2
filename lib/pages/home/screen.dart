@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sunnydaydev_site/core/platform_detect/platform_detect.dart';
 import 'package:sunnydaydev_site/core/ui/widget_size_tracker.dart';
 import 'package:sunnydaydev_site/pages/home/bloc.dart';
 
@@ -26,8 +27,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     _bloc = HomeBloc(context);
-    _logoAnimationController =  AnimationController(duration: Duration(seconds: 3), vsync: this);
-    _logoAnimationController.repeat();
+    _logoAnimationController =  AnimationController(duration: Duration(milliseconds: 700), vsync: this);
+    _logoAnimationController.repeat(reverse: true);
     super.initState();
   }
 
@@ -52,7 +53,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 child: _header,
               ),
               Positioned(
-                top: 16,
+                top: MediaQuery.of(context).padding.top + 16,
                 left: 32,
                 child: _headerTitle,
               ),
@@ -100,18 +101,26 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       textAlign: TextAlign.center,
       style: TextStyle(fontSize: textSize, color: Colors.white));
   }
-  
-  Widget get _animatedLogo => AnimatedBuilder(
-    animation: Tween(begin: 0.0, end: 1.0).animate(_logoAnimationController),
-    builder: (context, child) => Transform(
-      transform: Matrix4.rotationY(_logoAnimationController.value * pi),
-      alignment: Alignment.center,
-      child: Container(
-        width: 100,
-        height: 100,
-        child: Image.asset("assets/images/logo.png"),
+
+  Widget get _animatedLogo {
+    final image = Image.asset("assets/images/logo.png");
+
+    return Container(
+      width: 100,
+      height: 100,
+      child: PlatformDetect.isSafariBrowser
+          ? image
+          : _animatedRotation(image)
+    );
+  }
+
+  Widget _animatedRotation(Widget widget) => AnimatedBuilder(
+      animation: CurvedAnimation(
+        parent: _logoAnimationController,
+        curve: Curves.bounceIn,
+        reverseCurve: Curves.bounceOut
       ),
-    ),
+      builder: (context, child) => Transform.rotate(angle: pi - pi/16 + pi/8 * _logoAnimationController.value, child: widget)
   );
   
   Widget get _headerTitle => Row(
@@ -136,20 +145,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   );
   
   Widget get _mainContent {
+    final mainContentElements = <Widget>[
+      Padding(
+        padding: EdgeInsets.only(left: 32, right: 32, bottom: 64),
+        child: _infoCardsContent,
+      ),
+      Text("Контакты", style: TextStyle(fontSize: 20, color: Colors.brown)),
+      Padding(
+        padding: EdgeInsets.all(32),
+        child: _contacts,
+      )
+    ];
+
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(left: 32, right: 32, bottom: 64),
-          child: _infoCardsContent,
-        ),
-        Text("Контакты", style: TextStyle(fontSize: 20, color: Colors.brown)),
-        Padding(
-          padding: EdgeInsets.all(32),
-          child: _contacts,
-        ),
-        _footer
-      ],
+      children: PlatformDetect.isBrowser
+        ? mainContentElements + [_footer]
+        : mainContentElements
     );
   }
   
