@@ -108,9 +108,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return Container(
       width: 100,
       height: 100,
-      child: PlatformDetect.isSafariBrowser
-          ? image
-          : _animatedRotation(image)
+      child: _animatedRotation(image)
     );
   }
 
@@ -198,7 +196,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 Icon(icon, size: 48,color: Colors.brown,),
                 Padding(
                   padding: EdgeInsets.only(left: 16),
-                  child: Text(title, style: TextStyle(fontSize: 20, color: Colors.brown),),
+                  child: Text(title,
+                    style: TextStyle(fontSize: 20, color: Colors.brown)),
                 )
               ],
             ),
@@ -258,7 +257,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        Text("© ${DateTime.now().year} SunnyDay.Dev", style: TextStyle(color: Colors.white),)
+        Text("© ${DateTime.now().year} SunnyDay.Dev",
+          style: TextStyle(color: Colors.white),)
       ],
     ),
   );
