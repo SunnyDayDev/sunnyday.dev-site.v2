@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sunnydaydev_site/core/platform_detect/platform_detect.dart';
 import 'package:sunnydaydev_site/core/ui/widget_size_tracker.dart';
+import 'package:sunnydaydev_site/domain/about_me/about_me_models.dart';
 import 'package:sunnydaydev_site/pages/home/bloc.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,10 +27,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   
   @override
   void initState() {
-    _bloc = HomeBloc(context);
+    _bloc = HomeBloc();
     _logoAnimationController =  AnimationController(duration: Duration(milliseconds: 700), vsync: this);
     _logoAnimationController.repeat(reverse: true);
+
     super.initState();
+
+    _bloc.initState();
   }
 
   @override

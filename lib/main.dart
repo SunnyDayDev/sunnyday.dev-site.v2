@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sunnydaydev_site/pages/home/screen.dart';
+import 'initialize_other.dart'
+  if (dart.library.html) 'initialize_web.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  initialize();
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
