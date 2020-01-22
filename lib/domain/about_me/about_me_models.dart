@@ -1,4 +1,5 @@
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sunnydaydev_site/core/ui/custom_icons_icons.dart';
 
@@ -34,4 +35,8 @@ class TelegramContact extends ContactItem {
 
 class SkypeContact extends ContactItem {
   const SkypeContact(String value) : super(CustomIcons.skype, value);
+}
+
+class PureContact extends ContactItem {
+  const PureContact(String value) : super(Icons.person, value);
 }

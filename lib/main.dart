@@ -3,8 +3,9 @@ import 'package:sunnydaydev_site/pages/home/screen.dart';
 import 'initialize_other.dart'
   if (dart.library.html) 'initialize_web.dart';
 
-void main() {
-  initialize();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initialize();
 
   runApp(MyApp());
 }

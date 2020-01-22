@@ -41,3 +41,5 @@ lib/generated_plugin_registrant.dart
 /.firebase/
 
 .flutter-plugins-dependencies
+
+assets/secrets/firebase.json
