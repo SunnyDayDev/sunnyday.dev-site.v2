@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sunnydaydev_site/pages/home/screen.dart';
+import 'package:sunnydaydev_site/pages/home/home_widget.dart';
 import 'initialize_other.dart'
   if (dart.library.html) 'initialize_web.dart';
 
@@ -26,7 +26,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primaryColor: Color(0xFF654338),
+        primaryColorDark: Color(0xFF782D2A),
+        accentColor: Color(0xFF654338)
       ),
       home: HomePage(),
     );
