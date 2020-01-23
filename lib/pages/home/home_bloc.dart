@@ -5,21 +5,21 @@ import 'package:sunnydaydev_site/domain/about_me/about_me.dart';
 import 'package:sunnydaydev_site/domain/about_me/about_me_models.dart';
 import './bloc.dart';
 
-
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-
   final _aboutMeRepository = AboutMeRepository();
 
   HomeBloc();
-  
+
   @override
   HomeState get initialState => InitialHomeState();
-  
+
   Stream<List<InfoItem>> get infos =>
-    map((state) => state.infos).distinct();
-  
+      map((state) => state.infos ?? []).distinct();
+
   Stream<List<ContactItem>> get contacts =>
-    map((state) => state.contacts).distinct();
+      map((state) => state.contacts ?? []).distinct();
+
+  Stream<bool> get isLoading => map((state) => state.isLoading).distinct();
 
   StreamSubscription _contactsSubscription;
   StreamSubscription _infoItemsSubscription;
@@ -49,14 +49,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeState _contactsLoaded(List<ContactItem> items) => HomeState(
       infos: state.infos,
-      contacts: items
-  );
+      contacts: items,
+      isLoading: state.infos == null);
 
   HomeState _infosLoaded(List<InfoItem> items) => HomeState(
       infos: items,
-      contacts: state.contacts
-  );
-  
+      contacts: state.contacts,
+      isLoading: state.contacts == null);
+
   void _contactSelected(ContactSelected event) async {
     String url;
     if (event.contact is EmailContact) {
@@ -74,7 +74,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (await canLaunch(url)) {
       launch(url);
     }
-
   }
 
   @override
@@ -84,5 +83,4 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     return super.close();
   }
-
 }

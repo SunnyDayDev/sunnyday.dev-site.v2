@@ -28,7 +28,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     _bloc = HomeBloc();
-    _logoAnimationController =  AnimationController(duration: Duration(milliseconds: 700), vsync: this);
+    _logoAnimationController =
+        AnimationController(duration: Duration(milliseconds: 700), vsync: this);
     _logoAnimationController.repeat(reverse: true);
 
     super.initState();
@@ -122,13 +123,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         curve: Curves.bounceIn,
         reverseCurve: Curves.bounceOut
       ),
-      builder: (context, child) => Transform.rotate(angle: pi - pi/16 + pi/8 * _logoAnimationController.value, child: widget)
+      builder: (context, child) =>
+          Transform.rotate(angle: _animatedLogoAngle(), child: widget)
   );
+
+  double _animatedLogoAngle() =>
+      pi - pi/16 + pi/8 * _logoAnimationController.value;
   
   Widget get _headerTitle => Row(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
-      Text("SunnyDay", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),),
+      Text("SunnyDay",
+        style: TextStyle(
+            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+      ),
       Text(".Dev", style: TextStyle(fontSize: 18, color: Colors.white))
     ],
   );
@@ -140,13 +148,35 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       Size size = snapshot.data;
       return size.isEmpty
         ? Container()
-        : Padding(
-            padding: EdgeInsets.only(top: size.height - 64),
-            child: Center(child: _mainContent,));
+        : _mainContent(size.height);
     },
   );
+
+  Widget _mainContent(double headerHeight) => StreamBuilder(
+    stream: _bloc.isLoading,
+    builder: (context, snapshot) {
+      final isLoading = snapshot.data ?? true;
+      return isLoading
+          ? _loadingIndicatorBelowHeader(headerHeight)
+          : _loadedContentBelowHeader(headerHeight);
+    },
+  );
+
+  Widget _loadingIndicatorBelowHeader(double headerHeight) =>
+      Padding(
+          padding: EdgeInsets.only(top: headerHeight),
+          child: Container(
+            height: max(MediaQuery.of(context).size.height - headerHeight, 92),
+            width: MediaQuery.of(context).size.width,
+            child: Center(child: CircularProgressIndicator()),
+          ));
+
+  Widget _loadedContentBelowHeader(double headerHeight) =>
+      Padding(
+          padding: EdgeInsets.only(top: headerHeight - 64),
+          child: Center(child: _loadedContent));
   
-  Widget get _mainContent {
+  Widget get _loadedContent {
     final mainContentElements = <Widget>[
       Padding(
         padding: EdgeInsets.only(left: 32, right: 32, bottom: 64),
