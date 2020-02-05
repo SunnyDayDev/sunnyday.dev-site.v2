@@ -59,16 +59,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _contactSelected(ContactSelected event) async {
     String url;
-    if (event.contact is EmailContact) {
-      url = "mailto:${event.contact.value}";
-    } else if (event.contact is PhoneContact) {
-      url = "tel:${event.contact.value}";
-    } else if (event.contact is SkypeContact) {
-      url = "skype:${event.contact.value}?chat";
-    } else if (event.contact is TelegramContact) {
-      url = "tg://resolve?domain=${event.contact.value}";
-    } else {
-      return;
+
+    switch (event.contact.runtimeType) {
+      case EmailContact:
+        url = "mailto:${event.contact.value}";
+        break;
+      case PhoneContact:
+        url = "tel:${event.contact.value}";
+        break;
+      case SkypeContact:
+        url = "skype:${event.contact.value}?chat";
+        break;
+      case TelegramContact:
+        url = "tg://resolve?domain=${event.contact.value}";
+        break;
+      default:
+        return;
     }
 
     if (await canLaunch(url)) {
