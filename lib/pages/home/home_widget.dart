@@ -219,6 +219,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     width: 380,
     child: Card(
       elevation: 8,
+      shadowColor: Colors.grey,
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
