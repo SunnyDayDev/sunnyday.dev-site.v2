@@ -9,6 +9,8 @@ import 'package:sunnydaydev_site/core/platform_detect/platform_detect.dart';
 import 'package:sunnydaydev_site/core/ui/widget_size_tracker.dart';
 import 'package:sunnydaydev_site/domain/about_me/about_me_models.dart';
 import 'package:sunnydaydev_site/pages/home/bloc.dart';
+import 'package:sunnydaydev_site/widgets/contact_button.dart';
+import 'package:sunnydaydev_site/widgets/info_card.dart';
 
 class HomePage extends StatefulWidget {
   
@@ -182,7 +184,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         padding: EdgeInsets.only(left: 32, right: 32, bottom: 64),
         child: _infoCardsContent,
       ),
-      Text("Контакты", style: TextStyle(fontSize: 20, color: Colors.brown)),
+      Text("Контакты", style: TextStyle(fontSize: 20, color: Theme.of(context).accentColor)),
       Padding(
         padding: EdgeInsets.all(32),
         child: _contacts,
@@ -205,85 +207,36 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         alignment: WrapAlignment.center,
         crossAxisAlignment: WrapCrossAlignment.start,
         children: items.map((item) =>
-          _infoCard(title: item.title, icon: item.icon, message: item.message))
+          InfoCard(
+              title: item.title,
+              icon: item.icon,
+              text: item.message
+          ))
           .toList(),
       );
     }
-  );
-  
-  Widget _infoCard({
-    @required String title,
-    @required IconData icon,
-    @required String message
-  }) => Container(
-    width: 380,
-    child: Card(
-      elevation: 8,
-      shadowColor: Colors.grey,
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Icon(icon, size: 48,color: Colors.brown,),
-                Padding(
-                  padding: EdgeInsets.only(left: 16),
-                  child: Text(title,
-                    style: TextStyle(fontSize: 20, color: Colors.brown)),
-                )
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 64, top: 16),
-              child: Text(message),
-            )
-          ],
-        ),
-      ),
-    ),
   );
   
   Widget get _contacts => StreamBuilder(
     stream: _bloc.contacts,
     builder: (context, snapshot) {
       final List<ContactItem> items = snapshot.data ?? List();
+
       return Wrap(
         alignment: WrapAlignment.center,
         crossAxisAlignment: WrapCrossAlignment.start,
         spacing: 32,
-        children: items.map((item) => _contact(
-          icon: item.icon,
-          text: item.value,
-          onTap: () {
-            _bloc.add(ContactSelected(item));
-          }))
-          .toList()
+        children: items.map(_contactButton).toList()
       );
     },
   );
-  
-  Widget _contact({
-    @required IconData icon,
-    @required String text,
-    @required Function() onTap
-  }) => InkWell(
-    borderRadius: BorderRadius.circular(8),
-    onTap: onTap,
-    child: Padding(
-      padding: EdgeInsets.all(16),
-      child:  Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Icon(icon, size: 48),
-          Text(text)
-        ],
-      ),
-    ),
-  );
+
+  Widget _contactButton(ContactItem item) =>
+      ContactButton(
+          icon: item.icon,
+          text: item.value,
+          onPress: () => _bloc.add(ContactSelected(item))
+      );
   
   Widget get _footer => Container(
     color: Colors.black,
