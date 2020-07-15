@@ -8,10 +8,7 @@ import './bloc.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final _aboutMeRepository = AboutMeRepository();
 
-  HomeBloc();
-
-  @override
-  HomeState get initialState => InitialHomeState();
+  HomeBloc() : super(InitialHomeState());
 
   Stream<List<InfoItem>> get infos =>
       map((state) => state.infos ?? []).distinct();
