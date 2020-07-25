@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:sunnydaydev_site/core/url_launcher/url_launcher.dart';
 import 'package:sunnydaydev_site/domain/about_me/about_me.dart';
 import 'package:sunnydaydev_site/domain/about_me/about_me_models.dart';
+import 'package:sunnydaydev_site/core/bloc_extensions.dart';
 import './bloc.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
@@ -11,12 +12,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(InitialHomeState());
 
   Stream<List<InfoItem>> get infos =>
-      map((state) => state.infos ?? []).distinct();
+      stateStream
+          .map((state) => state.infos ?? [])
+          .distinct();
 
   Stream<List<ContactItem>> get contacts =>
-      map((state) => state.contacts ?? []).distinct();
+      stateStream
+        .map((state) => state.contacts ?? [])
+          .distinct();
 
-  Stream<bool> get isLoading => map((state) => state.isLoading).distinct();
+  Stream<bool> get isLoading =>
+      stateStream
+          .map((state) => state.isLoading)
+          .distinct();
 
   StreamSubscription _contactsSubscription;
   StreamSubscription _infoItemsSubscription;
