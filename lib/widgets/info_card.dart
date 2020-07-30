@@ -5,13 +5,13 @@ class InfoCard extends StatelessWidget {
   final String title;
   final String text;
   final IconData icon;
-  final Color tintColor;
+  final Color? tintColor;
 
   const InfoCard({
-    Key key,
-    @required this.title,
-    @required this.text,
-    @required this.icon,
+    Key? key,
+    required this.title,
+    required this.text,
+    required this.icon,
     this.tintColor
   }) : super(key: key);
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sunnydaydev_site/core/url_launcher/url_launcher.dart';
 import 'package:sunnydaydev_site/domain/about_me/about_me.dart';
 import 'package:sunnydaydev_site/domain/about_me/about_me_models.dart';
@@ -9,7 +10,7 @@ import './bloc.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final _aboutMeRepository = AboutMeRepository();
 
-  HomeBloc() : super(InitialHomeState());
+  HomeBloc() : super(HomeState());
 
   Stream<List<InfoItem>> get infos =>
       stateStream
@@ -26,17 +27,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           .map((state) => state.isLoading)
           .distinct();
 
-  StreamSubscription _contactsSubscription;
-  StreamSubscription _infoItemsSubscription;
+  CompositeSubscription _dispose = CompositeSubscription();
 
   void initState() {
-    _contactsSubscription = _aboutMeRepository.contacts().listen((items) {
-      add(ContactsLoaded(items));
-    });
+    _aboutMeRepository.contacts()
+        .listen((items) {
+          add(ContactsLoaded(items));
+        })
+        .addTo(_dispose);
 
-    _infoItemsSubscription = _aboutMeRepository.infos().listen((items) {
-      add(InfoItemsLoaded(items));
-    });
+    _aboutMeRepository.infos()
+        .listen((items) {
+          add(InfoItemsLoaded(items));
+        })
+        .addTo(_dispose);
   }
 
   @override
@@ -89,8 +93,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   @override
   Future<void> close() {
-    _contactsSubscription.cancel();
-    _infoItemsSubscription.cancel();
+    _dispose.dispose();
 
     return super.close();
   }

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class ContactButton extends StatelessWidget {
-  final VoidCallback onPress;
+  final VoidCallback? onPress;
   final IconData icon;
   final String text;
 
-  const ContactButton({Key key,
+  const ContactButton({Key? key,
     this.onPress,
-    @required this.icon,
-    @required this.text
+    required this.icon,
+    required this.text
   }) : super(key: key);
 
   @override

@@ -10,7 +10,11 @@ class InfoItem {
   final String title;
   final String message;
 
-  InfoItem({@required this.icon, @required this.title, @required this.message});
+  InfoItem({
+    required this.icon,
+    required this.title,
+    required this.message
+  });
 }
 
 @immutable

@@ -19,13 +19,13 @@ class HomePage extends StatefulWidget {
   
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin<HomePage> {
   
-  AnimationController _logoAnimationController;
+  late AnimationController _logoAnimationController;
   
+  late HomeBloc _bloc;
+
   WidgetSizeTracker _headerSizeTracker = WidgetSizeTracker(GlobalKey());
-  
-  HomeBloc _bloc;
   
   @override
   void initState() {
@@ -143,7 +143,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     ],
   );
   
-  Widget get _belowHeaderContent => StreamBuilder(
+  Widget get _belowHeaderContent => StreamBuilder<Size>(
     initialData: Size.zero,
     stream: _headerSizeTracker.size,
     builder: (context, snapshot) {
@@ -154,7 +154,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     },
   );
 
-  Widget _mainContent(double headerHeight) => StreamBuilder(
+  Widget _mainContent(double headerHeight) => StreamBuilder<bool>(
     stream: _bloc.isLoading,
     builder: (context, snapshot) {
       final isLoading = snapshot.data ?? true;
@@ -199,10 +199,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
   
-  Widget get _infoCardsContent => StreamBuilder(
+  Widget get _infoCardsContent => StreamBuilder<List<InfoItem>?>(
     stream: _bloc.infos,
     builder: (context, snapshot) {
-      List<InfoItem> items = snapshot.data ?? List();
+      List<InfoItem> items = snapshot.data ?? List.empty();
       return Wrap(
         alignment: WrapAlignment.center,
         crossAxisAlignment: WrapCrossAlignment.start,
@@ -217,10 +217,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   );
   
-  Widget get _contacts => StreamBuilder(
+  Widget get _contacts => StreamBuilder<List<ContactItem>>(
     stream: _bloc.contacts,
     builder: (context, snapshot) {
-      final List<ContactItem> items = snapshot.data ?? List();
+      final List<ContactItem> items = snapshot.data ?? List.empty();
 
       return Wrap(
         alignment: WrapAlignment.center,
