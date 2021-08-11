@@ -8,9 +8,5 @@ class HomeState {
   final List<ContactItem>? contacts;
   final bool isLoading;
 
-  HomeState({
-    this.infos = null,
-    this.contacts = null,
-    this.isLoading = true
-  });
+  HomeState({this.infos, this.contacts, this.isLoading = true});
 }

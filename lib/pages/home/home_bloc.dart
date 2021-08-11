@@ -1,10 +1,12 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sunnydaydev_site/core/bloc_extensions.dart';
 import 'package:sunnydaydev_site/core/url_launcher/url_launcher.dart';
 import 'package:sunnydaydev_site/domain/about_me/about_me.dart';
 import 'package:sunnydaydev_site/domain/about_me/about_me_models.dart';
-import 'package:sunnydaydev_site/core/bloc_extensions.dart';
+
 import './bloc.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
@@ -13,34 +15,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeState());
 
   Stream<List<InfoItem>> get infos =>
-      stateStream
-          .map((state) => state.infos ?? [])
-          .distinct();
+      stateStream.map((state) => state.infos ?? []).distinct();
 
   Stream<List<ContactItem>> get contacts =>
-      stateStream
-        .map((state) => state.contacts ?? [])
-          .distinct();
+      stateStream.map((state) => state.contacts ?? []).distinct();
 
   Stream<bool> get isLoading =>
-      stateStream
-          .map((state) => state.isLoading)
-          .distinct();
+      stateStream.map((state) => state.isLoading).distinct();
 
-  CompositeSubscription _dispose = CompositeSubscription();
+  final CompositeSubscription _dispose = CompositeSubscription();
 
   void initState() {
-    _aboutMeRepository.contacts()
-        .listen((items) {
-          add(ContactsLoaded(items));
-        })
-        .addTo(_dispose);
+    _aboutMeRepository.contacts().listen((items) {
+      add(ContactsLoaded(items));
+    }).addTo(_dispose);
 
-    _aboutMeRepository.infos()
-        .listen((items) {
-          add(InfoItemsLoaded(items));
-        })
-        .addTo(_dispose);
+    _aboutMeRepository.infos().listen((items) {
+      add(InfoItemsLoaded(items));
+    }).addTo(_dispose);
   }
 
   @override
@@ -57,9 +49,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   HomeState _contactsLoaded(List<ContactItem> items) => HomeState(
-      infos: state.infos,
-      contacts: items,
-      isLoading: state.infos == null);
+      infos: state.infos, contacts: items, isLoading: state.infos == null);
 
   HomeState _infosLoaded(List<InfoItem> items) => HomeState(
       infos: items,
@@ -71,23 +61,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     switch (event.contact.runtimeType) {
       case EmailContact:
-        url = "mailto:${event.contact.value}";
+        url = 'mailto:${event.contact.value}';
         break;
       case PhoneContact:
-        url = "tel:${event.contact.value}";
+        url = 'tel:${event.contact.value}';
         break;
       case SkypeContact:
-        url = "skype:${event.contact.value}?chat";
+        url = 'skype:${event.contact.value}?chat';
         break;
       case TelegramContact:
-        url = "tg://resolve?domain=${event.contact.value}";
+        url = 'tg://resolve?domain=${event.contact.value}';
         break;
       default:
         return;
     }
 
     if (await canLaunch(url)) {
-      launch(url);
+      await launch(url);
     }
   }
 
