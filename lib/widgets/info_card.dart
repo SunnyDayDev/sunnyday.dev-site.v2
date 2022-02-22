@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class InfoCard extends StatelessWidget {
   final String title;
@@ -7,13 +6,13 @@ class InfoCard extends StatelessWidget {
   final IconData icon;
   final Color? tintColor;
 
-  const InfoCard({
-    Key? key,
-    required this.title,
-    required this.text,
-    required this.icon,
-    this.tintColor
-  }) : super(key: key);
+  const InfoCard(
+      {Key? key,
+      required this.title,
+      required this.text,
+      required this.icon,
+      this.tintColor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,11 @@ class InfoCard extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Icon(icon, size: 48,color: tintColor,),
+                  Icon(
+                    icon,
+                    size: 48,
+                    color: tintColor,
+                  ),
                   Padding(
                     padding: EdgeInsets.only(left: 16),
                     child: Text(title,
