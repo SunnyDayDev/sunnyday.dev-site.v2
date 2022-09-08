@@ -62,14 +62,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   String? _getContactUrl(ContactItem item) {
-    switch (item.runtimeType) {
-      case EmailContact:
+    switch (item.kind) {
+      case ContactItemKind.EMAIL:
         return 'mailto:${item.value}';
-      case PhoneContact:
+      case ContactItemKind.PHONE:
         return 'tel:${item.value}';
-      case SkypeContact:
+      case ContactItemKind.SKYPE:
         return 'skype:${item.value}?chat';
-      case TelegramContact:
+      case ContactItemKind.TELEGRAM:
         return 'tg://resolve?domain=${item.value}';
       default:
         return null;

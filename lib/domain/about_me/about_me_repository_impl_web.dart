@@ -1,5 +1,4 @@
 import 'package:firebase/firebase.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sunnydaydev_site/core/ui/custom_icons_icons.dart';
 import 'package:sunnydaydev_site/domain/about_me/about_me_models.dart';
@@ -40,15 +39,15 @@ class _AboutMeRepositoryImpl implements AboutMeRepository {
     return ref.onSnapshot.map((snapshot) => snapshot.docs.map((doc) {
           switch (doc.get('type')) {
             case 'email':
-              return EmailContact(doc.get('value'));
+              return ContactItem.email(doc.get('value'));
             case 'phone':
-              return PhoneContact(doc.get('value'));
+              return ContactItem.phone(doc.get('value'));
             case 'telegram':
-              return TelegramContact(doc.get('value'));
+              return ContactItem.telegram(doc.get('value'));
             case 'skype':
-              return SkypeContact(doc.get('value'));
+              return ContactItem.skype(doc.get('value'));
             default:
-              return PureContact(doc.get('value'));
+              return ContactItem.unknown(doc.get('value'));
           }
         }).toList());
   }
